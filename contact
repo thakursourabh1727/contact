@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\products;
+use Illuminate\Http\Request;
+
+class newcontact extends Controller
+{
+    public function placeholder()
+    {
+        $info = products::all("id");
+        $a= count($info);
+    	return view('contactform',['id' => $info[$a-1]]);
+    }
+     public function formdata()
+    {
+    	//$info = request()->all();
+    	//return $info;
+    	//return view('savedata',compact('info'));
+        $a= new products();
+        $a->id =request('pid');
+        $a->pname=request('pname');
+        $a->price=request('price');
+        $a->des=request('des');
+        $a->save();
+        return redirect('product');
+    }
+    public function edit()
+    {
+        $pid =request('pid');
+        $a= products::find("$pid");
+        return view('edit',compact('a'));
+    }
+     public function update()
+    {
+
+        $pid =request('pid');
+        $a= products::find("$pid");
+        //return $a;
+        $a->pname=request('pname');
+        $a->price=request('price');
+        $a->des=request('des');
+        $a->save();
+        return redirect('product');
+    }
+    public function delete()
+    {
+         $pid =request('pid');
+         $a= products::find("$pid");
+         $a->delete();
+        return redirect('product');
+    }
+}
